@@ -1,0 +1,224 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>First-Stage Mixer Failure — Data Analysis Report</title>
+<style>
+:root{ color-scheme: light; }
+*{box-sizing:border-box}
+html,body{background:#ffffff;}
+body{margin:0;color:#1a1a1a;
+  font:16px/1.65 -apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;}
+.wrap{max-width:820px;margin:0 auto;padding:0 28px;}
+
+header.top{border-bottom:2px solid #1a1a1a;padding:44px 0 22px;}
+.eyebrow{text-transform:uppercase;letter-spacing:.12em;font-size:12px;font-weight:700;color:#555;}
+h1{font-size:29px;line-height:1.25;margin:.4em 0 .35em;font-weight:700;}
+header .sub{font-size:17px;color:#444;max-width:68ch;margin:0;}
+.meta{font-size:13px;color:#555;margin-top:16px;padding-top:14px;border-top:1px solid #e2e2e2;}
+.meta b{color:#1a1a1a;}
+
+section{padding:28px 0;border-bottom:1px solid #e6e6e6;}
+.sec-label{text-transform:uppercase;letter-spacing:.1em;font-size:12px;font-weight:700;color:#666;margin-bottom:8px;}
+h2{font-size:21px;margin:0 0 .3em;font-weight:700;line-height:1.3;}
+h3{font-size:16px;margin:1.6em 0 .3em;font-weight:700;}
+p{margin:.7em 0;}
+.lead{font-size:17.5px;}
+strong{font-weight:650;}
+a{color:#1a1a1a;}
+
+/* callout — plain, sharp, monochrome */
+.note{border:1px solid #cccccc;border-left:4px solid #1a1a1a;padding:14px 18px;margin:20px 0;background:#fafafa;}
+.note .k{font-weight:700;font-size:12px;text-transform:uppercase;letter-spacing:.07em;color:#555;margin-bottom:4px;}
+.note p{margin:.25em 0;}
+
+/* key numbers — plain bordered boxes */
+.kpis{display:flex;gap:0;margin:20px 0;border:1px solid #d0d0d0;}
+.kpi{flex:1;padding:16px 18px;border-right:1px solid #d0d0d0;}
+.kpi:last-child{border-right:0;}
+.kpi .n{font-size:30px;font-weight:700;line-height:1;}
+.kpi .l{font-size:12.5px;color:#555;margin-top:6px;}
+
+/* figures */
+figure{margin:22px 0;}
+figure img{width:100%;height:auto;border:1px solid #dcdcdc;display:block;}
+figcaption{margin-top:8px;font-size:13.5px;color:#555;}
+.shows{border:1px solid #d8d8d8;border-top:0;padding:11px 16px;font-size:14.5px;background:#f7f7f7;}
+.shows b{color:#1a1a1a;}
+.figlabel{font-weight:700;color:#1a1a1a;}
+
+ul.clean{margin:.5em 0;padding-left:1.25em;}
+ul.clean li{margin:.5em 0;}
+
+table{border-collapse:collapse;width:100%;font-size:14px;margin:16px 0;}
+th,td{border:1px solid #cfcfcf;padding:8px 11px;text-align:left;vertical-align:top;}
+th{background:#f0f0f0;font-size:12.5px;text-transform:uppercase;letter-spacing:.03em;color:#444;font-weight:700;}
+
+footer{padding:26px 0 66px;color:#666;font-size:13px;line-height:1.6;}
+footer b{color:#1a1a1a;}
+</style>
+</head>
+<body>
+
+<header class="top"><div class="wrap">
+  <div class="eyebrow">Gasifier First-Stage Feed Mixer — Failure Data Analysis</div>
+  <h1>Can the sensor data tell us why the mixer keeps failing?</h1>
+  <p class="sub">A run-by-run analysis of 15 gasifier campaigns, testing whether any measurement separates the runs that ended in a cracked mixer tip from the runs that finished healthy.</p>
+  <p class="meta"><b>Scope:</b> 15 runs · 5 gasifiers · 38 aligned sensors · 1-minute data &nbsp;|&nbsp; <b>Bottom line:</b> no reliable warning signal exists in this data — and this report shows clearly why.</p>
+</div></header>
+
+<div class="wrap">
+
+<!-- 1 PROBLEM -->
+<section>
+  <div class="sec-label">1 — The problem</div>
+  <h2>What is breaking, and why it matters</h2>
+  <p class="lead">The first-stage mixer is the burner that injects fuel slurry and oxygen into the gasifier and burns them at roughly <strong>1,500&nbsp;°C</strong>. Its tip is protected by a <strong>ceramic heat-shield</strong> and a <strong>cooling-water jacket</strong>.</p>
+  <p>The failure we are chasing is repeatable and expensive: the <strong>ceramic shield dislodges</strong> and the <strong>metal retaining nut cracks</strong> — sometimes after only a few weeks of running. Each failure forces a shutdown and a rebuild.</p>
+  <div class="note"><div class="k">The question from operations</div><p>Is there a measurable pattern in the sensors — a temperature, a pressure, a flow — that behaves differently in the runs that failed, so we could see a failure coming?</p></div>
+</section>
+
+<!-- 2 DATA -->
+<section>
+  <div class="sec-label">2 — The data we used</div>
+  <h2>Fifteen runs, eight of them failures</h2>
+  <p>We used every run with a complete 1-minute sensor history: <strong>15 campaigns</strong> across <strong>5 gasifiers</strong>. Eight ended in a failed mixer; seven ran healthy. Each run is a multi-week campaign, so the honest unit of comparison is the <strong>run</strong>, not the individual minute.</p>
+  <div class="kpis">
+    <div class="kpi"><div class="n">15</div><div class="l">full run-campaigns analysed</div></div>
+    <div class="kpi"><div class="n">8</div><div class="l">ended in a cracked / failed tip</div></div>
+    <div class="kpi"><div class="n">7</div><div class="l">finished healthy</div></div>
+  </div>
+  <figure>
+    <img src="figs/report/fig1_inventory.png" alt="Bar chart of the 15 runs and their durations, coloured by outcome">
+    <div class="shows"><span class="figlabel">Figure 1.</span> <b>What this shows:</b> Runs vary from 32 to 122 days. Failures (red) and healthy runs (blue) both appear at short <em>and</em> long durations — failure is not simply "ran too long." Note <strong>g4r21</strong>: the shortest run of all, yet it failed. Keep an eye on this run — it comes back.</div>
+  </figure>
+</section>
+
+<!-- 3 APPROACH -->
+<section>
+  <div class="sec-label">3 — How we looked</div>
+  <h2>Line up the failures against the healthy runs and hunt for a difference</h2>
+  <p>From the equipment drawings we built a short list of physical suspects and turned each into a measurement:</p>
+  <ul class="clean">
+    <li><strong>Cooling:</strong> was the tip hotter or less-cooled in failures? (cooling-water return temperature &amp; flow)</li>
+    <li><strong>Imbalance:</strong> did the two halves of the mixer (side A vs side B) disagree?</li>
+    <li><strong>Wear &amp; atomisation:</strong> did the oxygen/fuel pressure drop drift as the nozzle eroded?</li>
+    <li><strong>Fuel mix:</strong> was the oxygen-to-fuel ratio off?</li>
+    <li><strong>Thermal shock:</strong> more trips, bigger temperature swings, jumpier running?</li>
+  </ul>
+  <p>In total we distilled each run into <strong>147 measurements</strong> and tested every one — then applied honesty checks, because with few runs and many measurements it is dangerously easy to find a "pattern" that is really just luck.</p>
+</section>
+
+<!-- 4 FINDINGS -->
+<section>
+  <div class="sec-label">4 — What we found</div>
+  <h2>Finding 1 — the best clue still doesn&rsquo;t separate the two groups</h2>
+  <p>Our single strongest measurement was how <strong>steady the oxygen-feed temperature</strong> was (failures were a little jumpier). On paper it scored well. But look at the actual runs:</p>
+  <figure>
+    <img src="figs/report/fig2_best_signal.png" alt="Strip plot of oxygen-temperature instability, healthy vs failed, heavily overlapping">
+    <div class="shows"><span class="figlabel">Figure 2.</span> <b>What this shows:</b> The failed (red) and healthy (blue) clouds <b>overlap heavily</b>, and their averages sit only a hair apart. Several failures are calmer than several healthy runs. This was the best we found — and it still isn&rsquo;t a clean line you could set an alarm on.</div>
+  </figure>
+
+  <h2>Finding 2 — failed runs were not running hotter</h2>
+  <p>The intuitive theory is "the ones that overheated are the ones that broke." The data says no.</p>
+  <figure>
+    <img src="figs/report/fig3_temp_bands.png" alt="Temperature range bars per run, failed and healthy overlapping in the same band">
+    <div class="shows"><span class="figlabel">Figure 3.</span> <b>What this shows:</b> Each bar is the temperature range a run lived in. Red (failed) and blue (healthy) bars are <b>stacked in the same 1,450–1,520&nbsp;°C band</b>. The failed runs were not hotter.</div>
+  </figure>
+
+  <h2>Finding 3 — none of the physical suspects separates the two groups either</h2>
+  <p>We checked every physical theory the same way. Not one of them tells failed and healthy runs apart.</p>
+  <figure>
+    <img src="figs/report/fig8_suspects.png" alt="Six small plots of physical suspects, all overlapping between failed and healthy">
+    <div class="shows"><span class="figlabel">Figure 4.</span> <b>What this shows:</b> Six of the leading suspects — cooling temperature, cooling flow, oxygen-to-fuel ratio, reactor skin temperature, start/stop cycling, and nozzle pressure drop. In every panel the failed and healthy groups <b>sit on top of each other</b> (the black bars are the two group averages — nearly identical everywhere).</div>
+  </figure>
+</section>
+
+<!-- 5 HONESTY CHECKS -->
+<section>
+  <div class="sec-label">5 — The honesty checks</div>
+  <h2>A predictor trained on the data is no better than a coin toss</h2>
+  <p>The decisive test: train a model on some gasifiers, then ask it to predict failure on a <strong>gasifier it has never seen</strong>. If a real, general warning sign existed, the model would catch it.</p>
+  <figure>
+    <img src="figs/report/fig4_logo.png" alt="Out-of-sample predictions scattered on both sides of the coin-flip line">
+    <div class="shows"><span class="figlabel">Figure 5.</span> <b>What this shows:</b> Failed and healthy runs land on <b>both sides</b> of the 50/50 line. The model scores <b>0.55</b> — essentially a coin flip. Two runs make the point: <strong>g4r21</strong> failed but looks completely healthy; <strong>g4r24</strong> ran healthy but looks like a failure.</div>
+  </figure>
+
+  <h2>Our &ldquo;best clue&rdquo; is what random chance produces anyway</h2>
+  <p>When you test 147 measurements on only 15 runs, some will look good by pure luck. To measure that luck, we shuffled the failed/healthy labels at random 1,500 times and asked how good a clue chance normally throws up.</p>
+  <figure>
+    <img src="figs/report/fig5_permutation.png" alt="Histogram of best-by-chance scores with our result sitting inside the pile">
+    <div class="shows"><span class="figlabel">Figure 6.</span> <b>What this shows:</b> The grey pile is what <b>random luck</b> achieves. Our real best result (red line) sits <b>right in the middle of it</b> — a clue this strong appears about two-thirds of the time even when there is nothing there.</div>
+  </figure>
+
+  <div class="note"><div class="k">The run that breaks every theory</div><p><strong>g4r21</strong> is a genuine failure, yet it was the coolest, steadiest, most unremarkable run we have — and only 31 days long. If a run can look perfectly normal and still fail, then "normal-looking" cannot be used to predict a failure. This matches the equipment note that dislodgement happens <em>"even after short runs."</em></p></div>
+</section>
+
+<!-- 6 RANKING -->
+<section>
+  <div class="sec-label">6 — Every candidate, side by side</div>
+  <h2>The full ranking of leading signals</h2>
+  <p>For completeness, here is how all the leading measurements scored on their own — with the reminder that none survive the two honesty checks above.</p>
+  <figure>
+    <img src="figs/report/fig6_ranking.png" alt="Ranked bar chart of candidate signals, all modest">
+    <div class="shows"><span class="figlabel">Figure 7.</span> <b>What this shows:</b> Every candidate is only <b>modest</b> on its own (nothing near a perfect 1.0), the direction is inconsistent between machines for many of them (grey bars), and even the top one is really just noise.</div>
+  </figure>
+</section>
+
+<!-- 7 ONE ODDITY -->
+<section>
+  <div class="sec-label">7 — One real oddity worth an engineer&rsquo;s eye</div>
+  <h2>A single run with a dramatic cooling imbalance</h2>
+  <p>One failed run, <strong>g5r21</strong>, really did behave strangely: one half of its mixer ran <strong>8–12&nbsp;°C hotter</strong> than the other for the entire campaign. That is a genuine physical red flag — but it is a <em>one-run story</em>, not a rule.</p>
+  <figure>
+    <img src="figs/report/fig10_imbalance.png" alt="Bar chart of A/B imbalance per run, mixed colours">
+    <div class="shows"><span class="figlabel">Figure 8.</span> <b>What this shows:</b> The A/B imbalance for every run. g5r21 (failed) is extreme — but the <b>second-largest imbalance is a healthy run</b> (g5r20), and below the top the colours are mixed. Imbalance alone does not mark a failure.</div>
+  </figure>
+  <figure>
+    <img src="figs/report/fig7_timeseries.png" alt="Two runs' cooling-water return temperatures over time, one imbalanced, one balanced">
+    <div class="shows"><span class="figlabel">Figure 9.</span> <b>What this shows:</b> Left — the failed run g5r21, where mixer B (orange) sits far above mixer A (blue) all run. Right — a healthy run where both halves track together. Worth investigating on that specific unit; it does not generalise into a fleet-wide warning sign.</div>
+  </figure>
+</section>
+
+<!-- 8 WHY -->
+<section>
+  <div class="sec-label">8 — Why the data can&rsquo;t pinpoint the cause</div>
+  <h2>This is a limit of what was measured, not of the analysis</h2>
+  <p>A big reason a "signal" is so hard to trust: each machine has its own baseline, and that baseline is far larger than any failed-vs-healthy difference.</p>
+  <figure>
+    <img src="figs/report/fig9_machinebaseline.png" alt="Cooling temperature by machine, showing machines occupy different levels">
+    <div class="shows"><span class="figlabel">Figure 10.</span> <b>What this shows:</b> The same measurement, split by machine. The machines sit at clearly <b>different levels</b> (G5 runs its cooling water much hotter than G1), while within each machine the failed and healthy runs barely differ. Any "signal" is easily just a machine&rsquo;s personality — which is exactly why the predictor failed on an unseen machine.</div>
+  </figure>
+  <ul class="clean">
+    <li><strong>The sensors are in the wrong place.</strong> They measure conditions <em>near</em> the tip, but nothing measures the actual metal that cracks. It is like diagnosing a toothache with a thermometer.</li>
+    <li><strong>A failed run can look identical to a healthy one</strong> (g4r21). That points to a physical trigger — how the ceramic was fitted, the metal quality, or a start-up jolt — that these process sensors never see.</li>
+    <li><strong>Very few examples.</strong> 15 runs, and only 3 machines that both failed and ran clean. With so little to compare, even a real effect can&rsquo;t be proven.</li>
+    <li><strong>Steady running dominates.</strong> Over 90% of every campaign is calm, steady combustion. If the damage is done during trips and start-ups, minute-by-minute steady data barely captures it.</li>
+  </ul>
+</section>
+
+<!-- 9 CONCLUSION -->
+<section>
+  <div class="sec-label">9 — Conclusion &amp; recommendation</div>
+  <h2>The honest answer, and what would change it</h2>
+  <p class="lead">With the sensors we have, <strong>we cannot pinpoint a reliable cause of mixer failure</strong>, and we can prove it: failed and healthy runs overlap on every measurement, the best clue is no better than random chance, and a trained model predicting an unseen machine performs at coin-flip level.</p>
+  <p>The one direction the data faintly leans — failed runs run slightly <em>less steadily</em> — is a hypothesis worth watching, not a warning sign to act on today.</p>
+  <h3>What would actually let us catch it</h3>
+  <table>
+    <tr><th>Action</th><th>Why it would help</th></tr>
+    <tr><td><b>Put a sensor on the tip itself</b></td><td>A temperature or strain gauge on the metal that cracks — the one reading we are missing entirely.</td></tr>
+    <tr><td><b>Log every rebuild</b></td><td>Record how each ceramic shield is fitted and the metal batch used. The g4r21 clue points straight here.</td></tr>
+    <tr><td><b>Capture the jolts</b></td><td>High-speed data around every start-up, shutdown and trip — the violent moments steady sensors miss.</td></tr>
+    <tr><td><b>Grow the record</b></td><td>More matched failed/healthy runs per machine. More paired examples is the only way a true pattern can surface.</td></tr>
+  </table>
+  <div class="note"><div class="k">In one line</div><p>The data we have doesn&rsquo;t reveal why the mixer breaks — because a broken tip can look exactly like a healthy one — and to find the real cause we need to measure the tip, the rebuilds, and the start-up shocks, not just the steady process readings.</p></div>
+</section>
+
+<footer><div>
+  <b>Method note.</b> Sensors were aligned across gasifiers by stripping instrument tags; runs were reduced to operating (on-load, combusting) minutes; 147 run-level measurements were tested. Results were judged by run-level effect (not raw minute counts, which are misleadingly large), compared within each machine, and corrected for how hard each machine was running. The two honesty checks shown are a label-shuffle test (Figure 6) and a leave-one-machine-out prediction test (Figure 5). Full experiment log and per-run figures are available alongside this report. Source data was never modified.
+</div></footer>
+
+</div>
+</body>
+</html>
