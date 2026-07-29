@@ -133,6 +133,24 @@ footer b{color:#1a1a1a;}
     <img src="figs/report/fig8_suspects.png" alt="Six small plots of physical suspects, all overlapping between failed and healthy">
     <div class="shows"><span class="figlabel">Figure 4.</span> <b>What this shows:</b> Six of the leading suspects — cooling temperature, cooling flow, oxygen-to-fuel ratio, reactor skin temperature, start/stop cycling, and nozzle pressure drop. In every panel the failed and healthy groups <b>sit on top of each other</b> (the black bars are the two group averages — nearly identical everywhere).</div>
   </figure>
+
+  <h2>Finding 4 — the full picture: every sensor, split by machine, tells the same story</h2>
+  <p>To leave no doubt, we plotted the <em>full shape</em> of each sensor for every run — red curves are failed runs, blue are healthy — laid out machine by machine (G1, G4, G5, the three machines that have both failures and healthy runs). If a sensor mattered, the red curves would sit apart from the blue ones. They don&rsquo;t: within each machine the colours <b>weave through each other</b>.</p>
+  <figure>
+    <img src="figs/report/figA_temp_kde.png" alt="Distribution curves of temperature sensors by gasifier, failure and non-failure overlapping">
+    <div class="shows"><span class="figlabel">Figure 5.</span> <b>What this shows:</b> All the temperature signals. Read each small panel as "where did this sensor spend its time." Red (failed) and blue (healthy) curves <b>overlap and interleave</b> in every machine — no sensor cleanly shifts one way for failures.</div>
+  </figure>
+  <figure>
+    <img src="figs/report/figB_feed_kde.png" alt="Distribution curves of cooling, pressure and feed sensors by gasifier, overlapping">
+    <div class="shows"><span class="figlabel">Figure 6.</span> <b>What this shows:</b> The same view for cooling, pressure and feed signals (flows, reactor and header pressures, nozzle pressure drops). Same result — <b>jumbled, no consistent red-vs-blue separation</b> anywhere.</div>
+  </figure>
+
+  <h2>Finding 5 — nothing drifts toward the end of a run either</h2>
+  <p>If damage built up gradually, a sensor might creep in one direction as a failed run nears its end. We lined every run up on a common 0-to-1 timeline (0 = start, 1 = shutdown) and tracked the key signals across the whole life of the run.</p>
+  <figure>
+    <img src="figs/report/figC_trajectories.png" alt="Time-normalised trajectories of key signals, failure and non-failure runs tangled together">
+    <div class="shows"><span class="figlabel">Figure 7.</span> <b>What this shows:</b> Each line is one run over its life. The failed (red) and healthy (blue) lines <b>stay tangled together from start to finish</b> — no build-up, no end-of-run drift that marks the failures. (The lone red line dropping at the far right is a single sensor glitch, not a trend.)</div>
+  </figure>
 </section>
 
 <!-- 5 HONESTY CHECKS -->
@@ -142,14 +160,14 @@ footer b{color:#1a1a1a;}
   <p>The decisive test: train a model on some gasifiers, then ask it to predict failure on a <strong>gasifier it has never seen</strong>. If a real, general warning sign existed, the model would catch it.</p>
   <figure>
     <img src="figs/report/fig4_logo.png" alt="Out-of-sample predictions scattered on both sides of the coin-flip line">
-    <div class="shows"><span class="figlabel">Figure 5.</span> <b>What this shows:</b> Failed and healthy runs land on <b>both sides</b> of the 50/50 line. The model scores <b>0.55</b> — essentially a coin flip. Two runs make the point: <strong>g4r21</strong> failed but looks completely healthy; <strong>g4r24</strong> ran healthy but looks like a failure.</div>
+    <div class="shows"><span class="figlabel">Figure 8.</span> <b>What this shows:</b> Failed and healthy runs land on <b>both sides</b> of the 50/50 line. The model scores <b>0.55</b> — essentially a coin flip. Two runs make the point: <strong>g4r21</strong> failed but looks completely healthy; <strong>g4r24</strong> ran healthy but looks like a failure.</div>
   </figure>
 
   <h2>Our &ldquo;best clue&rdquo; is what random chance produces anyway</h2>
   <p>When you test 147 measurements on only 15 runs, some will look good by pure luck. To measure that luck, we shuffled the failed/healthy labels at random 1,500 times and asked how good a clue chance normally throws up.</p>
   <figure>
     <img src="figs/report/fig5_permutation.png" alt="Histogram of best-by-chance scores with our result sitting inside the pile">
-    <div class="shows"><span class="figlabel">Figure 6.</span> <b>What this shows:</b> The grey pile is what <b>random luck</b> achieves. Our real best result (red line) sits <b>right in the middle of it</b> — a clue this strong appears about two-thirds of the time even when there is nothing there.</div>
+    <div class="shows"><span class="figlabel">Figure 9.</span> <b>What this shows:</b> The grey pile is what <b>random luck</b> achieves. Our real best result (red line) sits <b>right in the middle of it</b> — a clue this strong appears about two-thirds of the time even when there is nothing there.</div>
   </figure>
 
   <div class="note"><div class="k">The run that breaks every theory</div><p><strong>g4r21</strong> is a genuine failure, yet it was the coolest, steadiest, most unremarkable run we have — and only 31 days long. If a run can look perfectly normal and still fail, then "normal-looking" cannot be used to predict a failure. This matches the equipment note that dislodgement happens <em>"even after short runs."</em></p></div>
@@ -162,7 +180,7 @@ footer b{color:#1a1a1a;}
   <p>For completeness, here is how all the leading measurements scored on their own — with the reminder that none survive the two honesty checks above.</p>
   <figure>
     <img src="figs/report/fig6_ranking.png" alt="Ranked bar chart of candidate signals, all modest">
-    <div class="shows"><span class="figlabel">Figure 7.</span> <b>What this shows:</b> Every candidate is only <b>modest</b> on its own (nothing near a perfect 1.0), the direction is inconsistent between machines for many of them (grey bars), and even the top one is really just noise.</div>
+    <div class="shows"><span class="figlabel">Figure 10.</span> <b>What this shows:</b> Every candidate is only <b>modest</b> on its own (nothing near a perfect 1.0), the direction is inconsistent between machines for many of them (grey bars), and even the top one is really just noise.</div>
   </figure>
 </section>
 
@@ -173,11 +191,11 @@ footer b{color:#1a1a1a;}
   <p>One failed run, <strong>g5r21</strong>, really did behave strangely: one half of its mixer ran <strong>8–12&nbsp;°C hotter</strong> than the other for the entire campaign. That is a genuine physical red flag — but it is a <em>one-run story</em>, not a rule.</p>
   <figure>
     <img src="figs/report/fig10_imbalance.png" alt="Bar chart of A/B imbalance per run, mixed colours">
-    <div class="shows"><span class="figlabel">Figure 8.</span> <b>What this shows:</b> The A/B imbalance for every run. g5r21 (failed) is extreme — but the <b>second-largest imbalance is a healthy run</b> (g5r20), and below the top the colours are mixed. Imbalance alone does not mark a failure.</div>
+    <div class="shows"><span class="figlabel">Figure 11.</span> <b>What this shows:</b> The A/B imbalance for every run. g5r21 (failed) is extreme — but the <b>second-largest imbalance is a healthy run</b> (g5r20), and below the top the colours are mixed. Imbalance alone does not mark a failure.</div>
   </figure>
   <figure>
     <img src="figs/report/fig7_timeseries.png" alt="Two runs' cooling-water return temperatures over time, one imbalanced, one balanced">
-    <div class="shows"><span class="figlabel">Figure 9.</span> <b>What this shows:</b> Left — the failed run g5r21, where mixer B (orange) sits far above mixer A (blue) all run. Right — a healthy run where both halves track together. Worth investigating on that specific unit; it does not generalise into a fleet-wide warning sign.</div>
+    <div class="shows"><span class="figlabel">Figure 12.</span> <b>What this shows:</b> Left — the failed run g5r21, where mixer B (orange) sits far above mixer A (blue) all run. Right — a healthy run where both halves track together. Worth investigating on that specific unit; it does not generalise into a fleet-wide warning sign.</div>
   </figure>
 </section>
 
@@ -188,7 +206,7 @@ footer b{color:#1a1a1a;}
   <p>A big reason a "signal" is so hard to trust: each machine has its own baseline, and that baseline is far larger than any failed-vs-healthy difference.</p>
   <figure>
     <img src="figs/report/fig9_machinebaseline.png" alt="Cooling temperature by machine, showing machines occupy different levels">
-    <div class="shows"><span class="figlabel">Figure 10.</span> <b>What this shows:</b> The same measurement, split by machine. The machines sit at clearly <b>different levels</b> (G5 runs its cooling water much hotter than G1), while within each machine the failed and healthy runs barely differ. Any "signal" is easily just a machine&rsquo;s personality — which is exactly why the predictor failed on an unseen machine.</div>
+    <div class="shows"><span class="figlabel">Figure 13.</span> <b>What this shows:</b> The same measurement, split by machine. The machines sit at clearly <b>different levels</b> (G5 runs its cooling water much hotter than G1), while within each machine the failed and healthy runs barely differ. Any "signal" is easily just a machine&rsquo;s personality — which is exactly why the predictor failed on an unseen machine.</div>
   </figure>
   <ul class="clean">
     <li><strong>The sensors are in the wrong place.</strong> They measure conditions <em>near</em> the tip, but nothing measures the actual metal that cracks. It is like diagnosing a toothache with a thermometer.</li>
@@ -216,7 +234,7 @@ footer b{color:#1a1a1a;}
 </section>
 
 <footer><div>
-  <b>Method note.</b> Sensors were aligned across gasifiers by stripping instrument tags; runs were reduced to operating (on-load, combusting) minutes; 147 run-level measurements were tested. Results were judged by run-level effect (not raw minute counts, which are misleadingly large), compared within each machine, and corrected for how hard each machine was running. The two honesty checks shown are a label-shuffle test (Figure 6) and a leave-one-machine-out prediction test (Figure 5). Full experiment log and per-run figures are available alongside this report. Source data was never modified.
+  <b>Method note.</b> Sensors were aligned across gasifiers by stripping instrument tags; runs were reduced to operating (on-load, combusting) minutes; 147 run-level measurements were tested. Results were judged by run-level effect (not raw minute counts, which are misleadingly large), compared within each machine, and corrected for how hard each machine was running. The two honesty checks shown are a label-shuffle test (Figure 9) and a leave-one-machine-out prediction test (Figure 8). Full experiment log and per-run figures are available alongside this report. Source data was never modified.
 </div></footer>
 
 </div>
